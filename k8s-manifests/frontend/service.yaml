@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend-service
+  namespace: frontend
+spec:
+  selector:
+    name: frontend
+  type: ClusterIP
+  ports:
+    - name: frontend
+      port: 80
+      targetPort: 3000

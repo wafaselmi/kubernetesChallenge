@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    name: backend
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: backend
+  template:
+    metadata:
+      labels:
+        name: backend
+    spec:
+      containers:
+        - image: wafaselmi/cloudbackend
+          name: backend
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100M"
+            requests:
+              cpu: "20m"
+              memory: "55M"
+          env:
+            - name: DBHOST
+              value: mysql.databases
+          ports:
+            - containerPort: 8080
+              name: backend

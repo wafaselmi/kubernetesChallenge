@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend-service
+  namespace: backend
+spec:
+  selector:
+    name: backend
+  type: ClusterIP
+  ports:
+    - name: backend
+      port: 80
+      targetPort: 8080

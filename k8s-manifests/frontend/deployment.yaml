@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: frontend
+  labels:
+    name: frontend
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: frontend
+  template:
+    metadata:
+      labels:
+        name: frontend
+    spec:
+      containers:
+        - image: wafaselmi/cloudfrontend
+          name: frontend
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100M"
+            requests:
+              cpu: "20m"
+              memory: "55M"
+          env:
+            - name: REACT_APP_API_URL
+              value: backend-service.backend
+          ports:
+            - containerPort: 5000
+              name: frontend
