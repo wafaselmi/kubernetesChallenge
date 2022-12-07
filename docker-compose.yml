@@ -1,0 +1,33 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-db2   
+    environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_USER=root
+    ports:
+        - "3306:3306"
+    restart: always
+
+  employee-crud-back:
+    image: "employee-crud/employee-crud-back:0.0.1"
+    container_name: employee-crud-back
+    ports:
+      - "8080:8080"
+    restart: always       
+    depends_on:
+      - db                           
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db2:3306/employees?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root  
+  
+  employee-crud-front:
+    image: "employee-crud-front:0.0.1"
+    container_name: employee-crud-front
+    ports:
+      - "3000:3000"
+    links:
+      - employee-crud-back
+  
